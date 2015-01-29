@@ -9,7 +9,7 @@ if has("gui_macvim")
   let macvim_skip_colorscheme=1         " Set to 1 to allow custom color schemes
 endif
 
-colorscheme ir_black                    " Color scheme
+colorscheme ir_black                    " Colorscheme (~/.vim/colors)
 
 set guifont=Monaco:h14                  " Set the font
 set antialias                           " Enable antialiasing

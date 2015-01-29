@@ -8,7 +8,7 @@
 let mapleader = '-'
 let maplocalleader = '\'
 
-colorscheme ir_black              " Colorscheme
+colorscheme ir_black              " Colorscheme (~/.vim/colors)
 filetype plugin indent on         " Enable syntax and indent by filetype and/or content
 syntax on                         " Enable syntax highlighting
 
@@ -54,6 +54,8 @@ set backupdir=~/.vim/backup       " Set the backupdir
 function! FoodCritic()
   " Everyone's a food critic
   " Chef linter plugin
+  " This requires the chef foodcritic plugin
+  " sudo gem install foodcritic
   if expand('%:p:h') =~# '.*/cookbooks/.*'
     setlocal makeprg=foodcritic\ $*\ %
     setlocal errorformat=%m:\ %f:%l
@@ -128,7 +130,7 @@ noremap <Leader>4 :call SetTab(4)<CR>
 " Use thes mappings to surround words and/or selections
 " with the following characters '' "" () {} []
 " with optional spaces e.g. 'word' or ' word '.
-" These mappings work with with the vim surround plugin.
+" These mappings work well with the vim surround plugin.
 noremap <Leader>' viw<ESC>a'<ESC>hbi'<ESC>lel
 vnoremap <Leader>' <ESC>`>a'<ESC>`<i'<ESC>
 noremap <Leader><Space>' viw<ESC>a '<ESC>hbi' <ESC>lel
@@ -181,9 +183,11 @@ augroup filetype_sh
 augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Restore the cursor position when reopening a file
 augroup jvim
+  " Restore the cursor position when reopening a file
   autocmd BufReadPost * call LastCursorPosition()
+
+  " Setup the chef foodcritic linter
   autocmd BufRead,BufNewFile * call FoodCritic()
 augroup END
 
