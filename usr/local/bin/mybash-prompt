@@ -1,0 +1,296 @@
+#! /bin/bash
+# mybash-prompt
+# James G.
+
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+mybash-prompt-select-color() {
+    case $1 in
+        black) echo $BP_BLACK
+            ;;
+        bright-black) echo $BP_BRIGHT_BLACK
+            ;;
+        red) echo $BP_RED
+            ;;
+        bright-red) echo $BP_BRIGHT_RED
+            ;;
+        green) echo $BP_GREEN
+            ;;
+        bright-green) echo $BP_BRIGHT_GREEN
+            ;;
+        yellow) echo $BP_YELLOW
+            ;;
+        bright-yellow) echo $BP_BRIGHT_YELLOW
+            ;;
+        blue) echo $BP_BLUE
+            ;;
+        bright-blue) echo $BP_BRIGHT_BLUE
+            ;;
+        magenta) echo $BP_MAGENTA
+            ;;
+        bright-magenta) echo $BP_BRIGHT_MAGENTA
+            ;;
+        cyan) echo $BP_CYAN
+            ;;
+        bright-cyan) echo $BP_BRIGHT_CYAN
+            ;;
+        white) echo $BP_WHITE
+            ;;
+        bright-white) echo $BP_BRIGHT_WHITE
+            ;;
+        *) echo "mybash-prompt: Invalid color: $1" >&2
+            ;;
+    esac
+}
+
+mybash-prompt-select-bgcolor() {
+    case $1 in
+        black) echo $BP_BLACK_BG
+            ;;
+        red) echo $BP_RED_BG
+            ;;
+        green) echo $BP_GREEN_BG
+            ;;
+        yellow) echo $BP_YELLOW_BG
+            ;;
+        blue) echo $BP_BLUE_BG
+            ;;
+        magenta) echo $BP_MAGENTA_BG
+            ;;
+        cyan) echo $BP_CYAN_BG
+            ;;
+        white) echo $BP_WHITE_BG
+            ;;
+        *) echo "mybash-prompt: Invalid color: $1" >&2
+            ;;
+    esac
+}
+
+mybash-prompt-set() {
+    while [ $# -gt 1 ]
+    do
+        case $1 in
+            text-color) BP_TXT_COLOR=$(mybash-prompt-select-color $2)
+                        ;;
+            background-color) BP_BG_COLOR=$(mybash-prompt-select-bgcolor $2)
+                              BP_DEL_L=$BP_DEL_L_SOLID
+                              BP_DEL_R=$BP_DEL_R_SOLID
+                        ;;
+            newline-color) BP_NL_COLOR=$(mybash-prompt-select-color $2)
+                        ;;
+            newline-start) BP_NL_START=$2
+                        ;;
+            newline-middle) BP_NL_MID=$2
+                        ;;
+            newline-end) BP_NL_END=$2
+                        ;;
+            newline-continue) BP_NL_CONT=$2
+                        ;;
+            delimeter-color) BP_DEL_COLOR=$(mybash-prompt-select-color $2)
+                        ;;
+            delimeter-left) BP_DEL_L=$2
+                        ;;
+            delimeter-middle) BP_DEL_M=$2
+                        ;;
+            delimeter-right) BP_DEL_R=$2
+                        ;;
+            *) echo "mybash-prompt: Invalid argument: $1" >&2
+                        ;;
+        esac
+
+        shift 2
+    done
+}
+
+mybash-prompt-start() {
+    if [ $# -eq 1 ]
+    then
+        case $1 in
+            start) echo "$BP_NL_COLOR$BP_NL_START "
+                ;;
+            middle) echo "$BP_NL_COLOR$BP_NL_MID "
+                ;;
+            end) echo "$BP_NL_COLOR$BP_NL_END "
+                ;;
+            cont) echo "$BP_NL_COLOR$BP_NL_CONT   "
+                ;;
+        esac
+    else
+        echo "$BP_NL_COLOR$BP_NL_MID "
+    fi
+}
+
+mybash-prompt-element() {
+    echo "$BP_DEL_COLOR$BP_DEL_L$BP_BG_COLOR$BP_TXT_COLOR$1$BP_NO_COLOR$BP_DEL_COLOR$BP_DEL_R $BP_NO_COLOR"
+}
+
+mybash-prompt-ps1() {
+    local LAST_STATUS=$?
+    local JOBS=$(jobs -r | wc -l)
+
+    local BP_BLACK='\[\e[0;30m\]'
+    local BP_BRIGHT_BLACK='\[\e[1;30m\]'
+    local BP_RED='\[\e[0;31m\]'
+    local BP_BRIGHT_RED='\[\e[1;31m\]'
+    local BP_GREEN='\[\e[0;32m\]'
+    local BP_BRIGHT_GREEN='\[\e[1;32m\]'
+    local BP_YELLOW='\[\e[0;33m\]'
+    local BP_BRIGHT_YELLOW='\[\e[1;33m\]'
+    local BP_BLUE='\[\e[0;34m\]'
+    local BP_BRIGHT_BLUE='\[\e[1;34m\]'
+    local BP_MAGENTA='\[\e[0;35m\]'
+    local BP_BRIGHT_MAGENTA='\[\e[1;35m\]'
+    local BP_CYAN='\[\e[0;36m\]'
+    local BP_BRIGHT_CYAN='\[\e[1;36m\]'
+    local BP_WHITE='\[\e[0;37m\]'
+    local BP_BRIGHT_WHITE='\[\e[1;37m\]'
+    local BP_NO_COLOR='\[\e[0m\]'
+    local BP_BLACK_BG='\[\e[40m\]'
+    local BP_RED_BG='\[\e[41m\]'
+    local BP_GREEN_BG='\[\e[42m\]'
+    local BP_YELLOW_BG='\[\e[43m\]'
+    local BP_BLUE_BG='\[\e[44m\]'
+    local BP_MAGENTA_BG='\[\e[45m\]'
+    local BP_CYAN_BG='\[\e[46m\]'
+    local BP_WHITE_BG='\[\e[47m\]'
+
+    local BP_DEL_L_SOLID=$'\xEE\x82\xB2'
+    local BP_DEL_L=$'\xEE\x82\xB3'
+    local BP_DEL_M=$'\xE2\x9A\xA1'
+    local BP_DEL_R=$'\xEE\x82\xB1'
+    local BP_DEL_R_SOLID=$'\xEE\x82\xB0'
+
+    local BP_NL_START=$'\xE2\x8E\xA1'
+    local BP_NL_MID=' '
+    local BP_NL_END=$'\xE2\x8E\xA3'
+    local BP_NL_CONT=$'\xE2\x9F\xBE'
+    local BP_DEL_COLOR=$BP_WHITE
+    local BP_NL_COLOR=$BP_WHITE
+    local BP_TXT_COLOR=$BP_BRIGHT_WHITE
+    local BP_BG_COLOR=$BP_CYAN_BG
+
+    mybash-prompt-set $@
+
+    PS1=$(mybash-prompt-element " \t ")
+    PS1+=$(mybash-prompt-element " \u@\h:\w ")
+
+    if which git-prompt > /dev/null &&
+       [ $(git rev-parse --is-inside-work-tree 2> /dev/null || echo false) == 'true' ]
+    then
+        PS1+=$(mybash-prompt-element " $(git-prompt) ")
+    fi
+
+    local PS1_2=""
+    local PS2_COUNT=0
+
+    PS1+='\n'$(mybash-prompt-start end) 
+
+
+    if [ $LAST_STATUS -gt 0 ]
+    then
+        BP_BG_COLOR=$BP_RED_BG
+        BP_TXT_COLOR=$BP_BRIGHT_WHITE
+        BP_DEL_L=$BP_DEL_L_SOLID
+        BP_DEL_R=$BP_DEL_R_SOLID
+
+        PS1+=$(mybash-prompt-element " $LAST_STATUS ")
+    else
+
+        if [ ! -z $VIRTUAL_ENV ]
+        then
+            ((PS2_COUNT+=1))
+
+            PS1_2+=$(mybash-prompt-element " $(basename $VIRTUAL_ENV 2> /dev/null) ")
+        fi
+
+
+        if [ $PS2_COUNT -eq 0 ]
+        then
+            PS1+=$(mybash-prompt-element " \$(test \$(id -u) -eq 0 && echo '#' || echo '$') ")
+        else
+            PS1+=$PS1_2
+        fi
+    fi
+
+    PS1+=$BP_NO_COLOR
+    export PS1
+}
+
+mybash-prompt-ps2() {
+    PS2="   $(mybash-prompt-start cont) "
+    PS2+=$BP_NO_COLOR
+    export PS2
+}
+
+mybash-prompt-ps4() {
+    PS4=$(mybash-prompt-element " \$BASH_SOURCE\${FUNCNAME[0]:+:\${FUNCNAME[0]}()}$BP_DEL_M  \$LINENO ")
+    PS4+=$BP_NO_COLOR
+    export PS4
+}
+
+mybash-prompt-help() {
+    echo "Settings: mybash-prompt-reset [[argument color|string] ...]" >&2
+    echo "  Arguments:" >&2
+    echo "    text-color         set the text color" >&2
+    echo "    newline-color      set the newline character color" >&2
+    echo "    newline-start      set the newline starting string" >&2
+    echo "    newline-middle     set the newline middle string" >&2
+    echo "    newline-end        set the newline ending string" >&2
+    echo "    delimeter-color    set the delimeter color" >&2
+    echo "    delimeter-left     set the delimeter left string" >&2
+    echo "    delimeter-middle   set the delimeter middle string" >&2
+    echo "    delimeter-right    set the delimeter right string" >&2
+    echo "  Colors (default: white):"
+    echo "    black, red, green, yellow, blue, magenta, cyan, white," >&2
+    echo "    bright-black, bright-red, bright-green, bright-yellow," >&2
+    echo "    bright-blue, bright-magenta, bright-cyan, bright-white" >&2
+}
+
+mybash-prompt-reset() {
+    local BP_BLACK='\[\e[0;30m\]'
+    local BP_BRIGHT_BLACK='\[\e[1;30m\]'
+    local BP_RED='\[\e[0;31m\]'
+    local BP_BRIGHT_RED='\[\e[1;31m\]'
+    local BP_GREEN='\[\e[0;32m\]'
+    local BP_BRIGHT_GREEN='\[\e[1;32m\]'
+    local BP_YELLOW='\[\e[0;33m\]'
+    local BP_BRIGHT_YELLOW='\[\e[1;33m\]'
+    local BP_BLUE='\[\e[0;34m\]'
+    local BP_BRIGHT_BLUE='\[\e[1;34m\]'
+    local BP_MAGENTA='\[\e[0;35m\]'
+    local BP_BRIGHT_MAGENTA='\[\e[1;35m\]'
+    local BP_CYAN='\[\e[0;36m\]'
+    local BP_BRIGHT_CYAN='\[\e[1;36m\]'
+    local BP_WHITE='\[\e[0;37m\]'
+    local BP_BRIGHT_WHITE='\[\e[1;37m\]'
+    local BP_BLACK_BG='\[\e[40m\]'
+    local BP_RED_BG='\[\e[41m\]'
+    local BP_GREEN_BG='\[\e[42m\]'
+    local BP_YELLOW_BG='\[\e[43m\]'
+    local BP_BLUE_BG='\[\e[44m\]'
+    local BP_MAGENTA_BG='\[\e[45m\]'
+    local BP_CYAN_BG='\[\e[46m\]'
+    local BP_WHITE_BG='\[\e[47m\]'
+    local BP_NO_COLOR='\[\e[0m\]'
+
+    local BP_DEL_L_SOLID=$'\xEE\x82\xB2'
+    local BP_DEL_L=$'\xEE\x82\xB3'
+    local BP_DEL_M=$'\xE2\x9A\xA1'
+    local BP_DEL_R=$'\xEE\x82\xB1'
+    local BP_DEL_R_SOLID=$'\xEE\x82\xB0'
+
+    local BP_NL_START=$'\xE2\x8E\xA1'
+    local BP_NL_MID=' '
+    local BP_NL_END=$'\xE2\x8E\xA3'
+    local BP_NL_CONT=$'\xE2\x9F\xBE'
+    local BP_DEL_COLOR=$BP_WHITE
+    local BP_NL_COLOR=$BP_WHITE
+    local BP_TXT_COLOR=$BP_WHITE
+
+    mybash-prompt-set $@
+    mybash-prompt-ps2
+    mybash-prompt-ps4
+
+    echo $PROMPT_COMMAND | grep mybash-prompt-ps1 > /dev/null ||
+        export PROMPT_COMMAND="mybash-prompt-ps1 $@; $PROMPT_COMMAND"
+}

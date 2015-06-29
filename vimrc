@@ -8,10 +8,6 @@
 let mapleader = '-'
 let maplocalleader = '\'
 
-colorscheme ir_black              " Colorscheme (~/.vim/colors)
-filetype plugin indent on         " Enable syntax and indent by filetype and/or content
-syntax on                         " Enable syntax highlighting
-
 set nocompatible                  " Reset options while resourcing .vimrc
 set background=dark               " Set the background
 set hidden                        " Use swap history to move between unsaved files
@@ -47,20 +43,68 @@ set sessionoptions-=options       " Don't save session options
 set undodir=~/.vim/temp           " Set the undodir
 set directory=~/.vim/temp         " Set the directory for swaps
 set backupdir=~/.vim/backup       " Set the backupdir
+set t_Co=256                      " 256 colors
+
+colorscheme ir_black              " Colorscheme (~/.vim/colors)
+filetype plugin indent on         " Enable syntax and indent by filetype and/or content
+syntax on                         " Enable syntax highlighting
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Function definitions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! FoodCritic()
+function! AirlineInit()
+  let g:airline_theme = 'luna'
+  "let g:airline_theme = 'zenburn'
+  let g:airline_powerline_fonts=1
+
+  if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
+
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#tabline#buffer_idx_mode = 1
+
+  let g:airline#extensions#tmuxline#enabled = 1
+endfunction
+
+function! PromptlineInit()
+  let g:promptline_theme = 'airline'
+  let g:promptline_powerline_symbols = 1
+  let g:promptline_preset = {
+        \'a'    : [ promptline#slices#python_virtualenv() ],
+        \'b'    : [ '\u@\h' ],
+        \'c'    : [ '\W' ],
+        \'warn' : [ promptline#slices#last_exit_code() ],
+        \'x'    : [ promptline#slices#vcs_branch() ],
+        \'y'    : [ promptline#slices#git_status() ]}
+endfunction
+
+function! TmuxlineInit()
+  let g:tmuxline_theme = 'airline'
+endfunction
+
+function! SyntasticInit()
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_check_on_open = 1
+  let g:syntastic_check_on_wq = 0
+  let g:syntastic_enable_signs = 1
+  let g:syntastic_error_symbol = "✗"
+  let g:syntastic_warning_symbol = "⚠"
+  let g:syntastic_style_error_symbol = "S✗"
+  let g:syntastic_style_warning_symbol = "S⚠"
+endfunction
+
+"function! FoodCritic()
   " Everyone's a food critic
   " Chef linter plugin
   " This requires the chef foodcritic plugin
   " sudo gem install foodcritic
-  if expand('%:p:h') =~# '.*/cookbooks/.*'
-    setlocal makeprg=foodcritic\ $*\ %
-    setlocal errorformat=%m:\ %f:%l
-  endif
-endfunction
+"  if expand('%:p:h') =~# '.*/cookbooks/.*'
+"    setlocal makeprg=foodcritic\ $*\ %
+"    setlocal errorformat=%m:\ %f:%l
+"  endif
+"endfunction
 
 function! MakeDir(dir)
   " Ensure the directory exists
@@ -86,15 +130,19 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ensure that .vim config directories exist
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call MakeDir($HOME . '/.vim')
 call MakeDir($HOME . '/.vim/temp')
 call MakeDir($HOME . '/.vim/backup')
-call MakeDir($HOME . '/.vim/colors')
 call MakeDir($HOME . '/.vim/bundle')
 call MakeDir($HOME . '/.vim/autoload')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Execute pathogen to load modules
+" Load modules
 call pathogen#infect()
+call AirlineInit()
+" call PromptlineInit()
+call TmuxlineInit()
+call SyntasticInit()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map <C-U> to toggle upper / lower case on word
@@ -118,12 +166,24 @@ nnoremap <C-L> <C-W>l
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map <Space> to NERDTree
-noremap <Space> :NERDTreeToggle<CR>
+noremap <silent> <Space> :NERDTreeToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings to change the number of spaces in tabs and indent
 noremap <Leader>2 :call SetTab(2)<CR>
 noremap <Leader>4 :call SetTab(4)<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Airline Tabline extension mappings
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " We have you surrounded!
@@ -174,6 +234,10 @@ augroup filetype_python
   autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 augroup END
 
+augroup filetype_ruby
+  autocmd FileType ruby setlocal shiftwidth=2 softtabstop=2
+augroup END
+
 augroup filetype_java
   autocmd FileType java setlocal shiftwidth=4 softtabstop=4
 augroup END
@@ -183,11 +247,4 @@ augroup filetype_sh
 augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-augroup jvim
-  " Restore the cursor position when reopening a file
-  autocmd BufReadPost * call LastCursorPosition()
-
-  " Setup the chef foodcritic linter
-  autocmd BufRead,BufNewFile * call FoodCritic()
-augroup END
-
+autocmd BufReadPost * call LastCursorPosition()
