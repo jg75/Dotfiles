@@ -174,8 +174,8 @@ mybash-prompt-ps1() {
     PS1=$(mybash-prompt-element " \t ")
     PS1+=$(mybash-prompt-element " \u@\h:\w ")
 
-    if which git-prompt > /dev/null &&
-       [ $(git rev-parse --is-inside-work-tree 2> /dev/null || echo false) == 'true' ]
+    if which git-prompt > /dev/null 2> /dev/null &&
+       [ "$(git rev-parse --is-inside-work-tree 2> /dev/null || echo 'false')" == 'true' ]
     then
         PS1+=$(mybash-prompt-element " $(git-prompt) ")
     fi
@@ -229,21 +229,26 @@ mybash-prompt-ps4() {
 }
 
 mybash-prompt-help() {
-    echo "Settings: mybash-prompt-reset [[argument color|string] ...]" >&2
-    echo "  Arguments:" >&2
-    echo "    text-color         set the text color" >&2
-    echo "    newline-color      set the newline character color" >&2
-    echo "    newline-start      set the newline starting string" >&2
-    echo "    newline-middle     set the newline middle string" >&2
-    echo "    newline-end        set the newline ending string" >&2
-    echo "    delimeter-color    set the delimeter color" >&2
-    echo "    delimeter-left     set the delimeter left string" >&2
-    echo "    delimeter-middle   set the delimeter middle string" >&2
-    echo "    delimeter-right    set the delimeter right string" >&2
+    exec >&2
+
+    echo "source mybash-prompt"
+    echo "mybash-prompt-reset [[setting value] ...]"
+    echo "  Settings:"
+    echo "    text-color         set the text color"
+    echo "    background-color   set the background color"
+    echo "    newline-color      set the newline character color"
+    echo "    newline-start      set the newline starting string"
+    echo "    newline-middle     set the newline middle string"
+    echo "    newline-end        set the newline ending string"
+    echo "    delimeter-color    set the delimeter color"
+    echo "    delimeter-left     set the delimeter left string"
+    echo "    delimeter-middle   set the delimeter middle string"
+    echo "    delimeter-right    set the delimeter right string"
     echo "  Colors (default: white):"
-    echo "    black, red, green, yellow, blue, magenta, cyan, white," >&2
-    echo "    bright-black, bright-red, bright-green, bright-yellow," >&2
-    echo "    bright-blue, bright-magenta, bright-cyan, bright-white" >&2
+    echo "    black, red, green, yellow, blue, magenta, cyan, white,"
+    echo "    bright-black, bright-red, bright-green, bright-yellow,"
+    echo "    bright-blue, bright-magenta, bright-cyan, bright-white"
+    echo "  Note: You may need to install the Powerline fonts for some characters to show up"
 }
 
 mybash-prompt-reset() {
@@ -294,3 +299,8 @@ mybash-prompt-reset() {
     echo $PROMPT_COMMAND | grep mybash-prompt-ps1 > /dev/null ||
         export PROMPT_COMMAND="mybash-prompt-ps1 $@; $PROMPT_COMMAND"
 }
+
+if [ "$1" == "help" ]
+then
+    mybash-prompt-help
+fi
