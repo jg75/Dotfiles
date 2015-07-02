@@ -1,5 +1,4 @@
-# VIM
+# Dotfiles
 
- - vimrc
- - gvimrc (gvim or mvim)
+My stuff
 
