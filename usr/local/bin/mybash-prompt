@@ -167,7 +167,7 @@ mybash-prompt-ps1() {
     local BP_DEL_COLOR=$BP_WHITE
     local BP_NL_COLOR=$BP_WHITE
     local BP_TXT_COLOR=$BP_BRIGHT_WHITE
-    local BP_BG_COLOR=$BP_CYAN_BG
+    local BP_BG_COLOR
 
     mybash-prompt-set $@
 
@@ -291,6 +291,7 @@ mybash-prompt-reset() {
     local BP_DEL_COLOR=$BP_WHITE
     local BP_NL_COLOR=$BP_WHITE
     local BP_TXT_COLOR=$BP_WHITE
+    local BP_BG_COLOR
 
     mybash-prompt-set $@
     mybash-prompt-ps2
