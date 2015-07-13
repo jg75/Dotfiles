@@ -45,7 +45,7 @@ set directory=~/.vim/temp         " Set the directory for swaps
 set backupdir=~/.vim/backup       " Set the backupdir
 set t_Co=256                      " 256 colors
 
-colorscheme ir_black              " Colorscheme (~/.vim/colors)
+" colorscheme ir_black              " Colorscheme (~/.vim/colors)
 filetype plugin indent on         " Enable syntax and indent by filetype and/or content
 syntax on                         " Enable syntax highlighting
 
@@ -53,8 +53,8 @@ syntax on                         " Enable syntax highlighting
 " Function definitions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! AirlineInit()
-  let g:airline_theme = 'luna'
-  "let g:airline_theme = 'zenburn'
+  " let g:airline_theme = 'luna'
+  let g:airline_theme = 'zenburn'
   let g:airline_powerline_fonts=1
 
   if !exists('g:airline_symbols')
@@ -93,6 +93,14 @@ function! SyntasticInit()
   let g:syntastic_warning_symbol = "⚠"
   let g:syntastic_style_error_symbol = "S✗"
   let g:syntastic_style_warning_symbol = "S⚠"
+  let g:syntastic_javascript_checkers = ['jshint']
+  let g:syntastic_json_checkers = ['jsonlint']
+  let g:syntastic_disabled_filetypes=['html', 'jinja2']
+  let g:syntastic_mode_map = { 'passive_filetypes': ['java', 'cpp', 'html', 'jinja2'] }
+endfunction
+
+function! PythonModeInit()
+  let g:pymode_folding = 0
 endfunction
 
 "function! FoodCritic()
@@ -143,6 +151,7 @@ call AirlineInit()
 " call PromptlineInit()
 call TmuxlineInit()
 call SyntasticInit()
+call PythonModeInit()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map <C-U> to toggle upper / lower case on word
@@ -245,6 +254,8 @@ augroup END
 augroup filetype_sh
   autocmd FileType sh setlocal shiftwidth=4 softtabstop=4
 augroup END
+
+autocmd BufRead,BufNewFile *.json set filetype=json
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd BufReadPost * call LastCursorPosition()

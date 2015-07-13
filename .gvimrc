@@ -16,3 +16,4 @@ set antialias                                       " Enable antialiasing
 set title                                           " Enable title
 set titlestring=\%-25.55F\ %a%r%m                   " Title string
 set titlelen=70                                     " Title string length
+let g:airline_theme = 'luna'

@@ -1,6 +1,7 @@
 # Colors
 export CLICOLOR=1
-export LSCOLORS=ExFxBxDxCxegedabagacad
+export LSCOLORS=BxHxGxFxCxegedabagacad
+
 
 # Editor
 export EDITOR=/usr/bin/vim
@@ -17,9 +18,9 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$XCODE_PATH:$POSTGRESQ
 if [ -s /usr/local/bin/mybash-prompt ]
 then
     . /usr/local/bin/mybash-prompt
-    mybash-prompt-reset newline-color bright-cyan \
-                        delimeter-color bright-cyan \
-                        background-color cyan \
+    mybash-prompt-reset newline-color bright-red \
+                        delimeter-color bright-red \
+                        background-color red \
                         text-color bright-white
 fi
 
