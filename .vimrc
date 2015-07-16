@@ -49,6 +49,9 @@ set t_Co=256                      " 256 colors
 filetype plugin indent on         " Enable syntax and indent by filetype and/or content
 syntax on                         " Enable syntax highlighting
 
+" Autocompletion
+set completeopt=menuone,longest,preview
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Function definitions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -99,8 +102,8 @@ function! SyntasticInit()
   let g:syntastic_mode_map = { 'passive_filetypes': ['java', 'cpp', 'html', 'jinja2'] }
 endfunction
 
-function! PythonModeInit()
-  let g:pymode_folding = 0
+function! SuperTabInit()
+  let g:SuperTabDefaultCompletionType = "context"
 endfunction
 
 "function! FoodCritic()
@@ -147,11 +150,12 @@ call MakeDir($HOME . '/.vim/autoload')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Load modules
 call pathogen#infect()
+call pathogen#helptags()
 call AirlineInit()
-" call PromptlineInit()
+"call PromptlineInit()
 call TmuxlineInit()
 call SyntasticInit()
-call PythonModeInit()
+call SuperTabInit()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map <C-U> to toggle upper / lower case on word
@@ -241,6 +245,7 @@ vnoremap <Leader><Space>] <ESC>`>a ]<ESC>`<i[ <ESC>
 " Change tab and indent space length for specific file types
 augroup filetype_python
   autocmd FileType python setlocal shiftwidth=4 softtabstop=4
+  autocmd FileType python set omnifunc=pythoncomplete#Complete
 augroup END
 
 augroup filetype_ruby
