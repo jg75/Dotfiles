@@ -51,6 +51,7 @@ syntax on                         " Enable syntax highlighting
 
 " Autocompletion
 set completeopt=menuone,longest,preview
+set omnifunc=syntaxcomplete#Complete
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Function definitions
@@ -68,18 +69,6 @@ function! AirlineInit()
   let g:airline#extensions#tabline#buffer_idx_mode = 1
 
   let g:airline#extensions#tmuxline#enabled = 1
-endfunction
-
-function! PromptlineInit()
-  let g:promptline_theme = 'airline'
-  let g:promptline_powerline_symbols = 1
-  let g:promptline_preset = {
-        \'a'    : [ promptline#slices#python_virtualenv() ],
-        \'b'    : [ '\u@\h' ],
-        \'c'    : [ '\W' ],
-        \'warn' : [ promptline#slices#last_exit_code() ],
-        \'x'    : [ promptline#slices#vcs_branch() ],
-        \'y'    : [ promptline#slices#git_status() ]}
 endfunction
 
 function! TmuxlineInit()
@@ -152,7 +141,6 @@ call MakeDir($HOME . '/.vim/autoload')
 call pathogen#infect()
 call pathogen#helptags()
 call AirlineInit()
-"call PromptlineInit()
 call TmuxlineInit()
 call SyntasticInit()
 call SuperTabInit()
@@ -250,6 +238,9 @@ augroup END
 
 augroup filetype_ruby
   autocmd FileType ruby setlocal shiftwidth=2 softtabstop=2
+  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
+  autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 augroup END
 
 augroup filetype_java
