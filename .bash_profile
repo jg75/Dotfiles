@@ -1,8 +1,3 @@
-# Colors
-export CLICOLOR=1
-export LSCOLORS=BxHxGxFxCxegedabagacad
-
-
 # Editor
 export EDITOR=/usr/bin/vim
 export VISUAL=$EDITOR
@@ -14,13 +9,23 @@ POSTGRESQL93='/Library/PostgreSQL/9.3'
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$XCODE_PATH:$POSTGRESQL93/bin:$HOME/bin:."
 
+# Colors
+export CLICOLOR=1
+export LSCOLORS=Exfxcxdxbxegedabagacad
+export GREP_OPTIONS='--color=auto'
+
+# More Colors
+if [ -s $BREW_PREFIX/etc/grc.bashrc ]
+then
+    . "`brew --prefix`/etc/grc.bashrc"
+fi
+
 # Prompt
 if [ -s /usr/local/bin/mybash-prompt ]
 then
     . /usr/local/bin/mybash-prompt
-    mybash-prompt-reset newline-color bright-red \
-                        delimeter-color bright-red \
-                        background-color red \
+    mybash-prompt-reset newline-color bright-cyan \
+                        delimeter-color bright-cyan \
                         text-color bright-white
 fi
 
@@ -60,6 +65,7 @@ then
 fi
 
 
+# Vim Man pages
 vman() {
     vim -c "SuperMan $*"
 
