@@ -1,0 +1,46 @@
+snippet #!
+	#! /bin/bash
+snippet if
+	if [ ${1:condition} ]
+	then
+		${2:command}
+snippet eli
+	elif [ ${1:condition} ]
+	then
+		${2:command}
+snippet el
+	else
+	then
+		${1:command}
+	fi
+snippet case ${1:arg} in 
+		${2:pattern}) ${3}
+				;;
+	esac
+snippet while
+	while [ ${1:condition} ]
+	do
+		${2:command}
+	done
+snippet for
+	for ${1:arg} in ${2:list}
+	do
+		${3:command}
+	done
+snippet fori
+	for ((${2:i} = 0; $2 < ${1:count}; $2++))
+	do
+		${3:command}
+	done
+snippet trap
+	trap '${1:cleanup}' ${2:signal}
+snippet getopts
+	while getopts "h" ${1:opt}
+	do
+		case $1 in
+			h) ${2:help}
+			;;
+		esac
+	done
+
+	shift $((OPTIND-1))
