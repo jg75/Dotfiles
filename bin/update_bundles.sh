@@ -1,5 +1,7 @@
 #! /bin/bash
 
+
+PNAME=$(basename $0)
 VIM_DIR=$HOME/.vim
 BUNDLE_DIR=$VIM_DIR/bundle
 CONFIG_FILE=$BUNDLE_DIR/.bundle.list
@@ -51,7 +53,7 @@ readConfig() {
 updateBundles() {
     eval $(readConfig $CONFIG_FILE)
 
-    echo "Updating bundles"
+    echo "Updating bundles."
 
     while [ ${COUNT:=1} -le ${#BUNDLE_NAME[*]} ]
     do
@@ -78,5 +80,49 @@ updateBundles() {
     done
 }
 
+
+updateBundlesList() {
+    echo "Updating List."
+
+    for BUNDLE in $BUNDLE_DIR/*
+    do
+        if [ -d $BUNDLE ]
+        then
+            cd $BUNDLE
+            ISREPO=$(git rev-parse --is-inside-work-tree 2> /dev/null)
+
+            if [ ${ISREPO:=false} == 'true' ]
+            then
+                BUNDLE_NAME=$(basename $BUNDLE)
+                BUNDLE_REPO=$(git config --get remote.origin.url)
+
+                echo "$BUNDLE_NAME,$BUNDLE_REPO"
+            fi
+
+            cd - > /dev/null
+        fi
+    done > $CONFIG_FILE
+}
+
+
+usage() {
+    echo "Usage: $PNAME -[hl]"
+}
+
+while getopts "hl" OPTION
+do
+    case $OPTION in
+        h) usage
+           exit
+           ;;
+        l) updateBundlesList
+           ;;
+        *) usage
+           exit 1
+           ;;
+    esac
+done
+
+shift $((OPTIND-1))
 
 updateBundles
