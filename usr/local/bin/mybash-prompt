@@ -94,6 +94,8 @@ mybash-prompt-set() {
                         ;;
             delimeter-right) BP_DEL_R=$2
                         ;;
+            hostname) BP_HOSTNAME=$2
+                        ;;
             *) echo "mybash-prompt: Invalid argument: $1" >&2
                         ;;
         esac
@@ -172,7 +174,13 @@ mybash-prompt-ps1() {
     mybash-prompt-set $@
 
     PS1=$(mybash-prompt-element " \t ")
-    PS1+=$(mybash-prompt-element " \u@\h:\w ")
+
+    if [ ! -z $BP_HOSTNAME ]
+    then
+        PS1+=$(mybash-prompt-element " \u@$BP_HOSTNAME:\w ")
+    else
+        PS1+=$(mybash-prompt-element " \u@\h:\w ")
+    fi
 
     if which git-prompt > /dev/null 2> /dev/null &&
        [ "$(git rev-parse --is-inside-work-tree 2> /dev/null || echo 'false')" == 'true' ]
