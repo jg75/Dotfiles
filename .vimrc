@@ -148,12 +148,6 @@ function! ToggleColorColumn()
 endfunction
 
 
-function! FixColorColumn()
-  highlight ColorColumn ctermbg=DarkRed ctermfg=black
-  exec 'set colorcolumn=' . join(range(2, 80, 3), ',')
-endfunction
-
-
 function! LastCursorPosition()
   " Jump to the last cursor position
   if line("'\"") > 1 && line("'\"") <= line("$") 
