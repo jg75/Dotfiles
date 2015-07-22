@@ -51,9 +51,6 @@ set visualbell t_vb=
 " Set keywords
 set iskeyword+=_,$,@,%,#
 
-" Enable mouse
-set mouse=a
-
 " Line numbers
 set number
 
