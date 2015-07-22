@@ -38,6 +38,12 @@ then
                         hostname $NICKNAME
 fi
 
+# NVM
+if [ -s $HOME/.nvm/nvm.sh ]
+then
+    . $HOME/.nvm/nvm.sh
+fi
+
 # Vim Man pages
 vman() {
     vim -c "SuperMan $*"
