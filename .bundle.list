@@ -1,0 +1,11 @@
+nerdtree,git@github.com:scrooloose/nerdtree.git
+supertab,git@github.com:ervandew/supertab.git
+syntastic,git@github.com:scrooloose/syntastic.git
+tabline.vim,git@github.com:mkitt/tabline.vim.git
+tlib_vim,git@github.com:tomtom/tlib_vim.git
+vim-addon-mw-utils,git@github.com:MarcWeber/vim-addon-mw-utils.git
+vim-airline,git@github.com:bling/vim-airline.git
+vim-fugitive,git@github.com:tpope/vim-fugitive.git
+vim-snipmate,git@github.com:garbas/vim-snipmate.git
+vim-superman,git@github.com:jez/vim-superman.git
+vim-surround,git@github.com:tpope/vim-surround.git
