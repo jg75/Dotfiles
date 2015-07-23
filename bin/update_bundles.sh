@@ -120,7 +120,7 @@ usage() {
 }
 
 
-while getopts "hl" OPTION
+while getopts "hlu" OPTION
 do
     case $OPTION in
         h) usage
