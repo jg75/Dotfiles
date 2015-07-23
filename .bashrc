@@ -7,9 +7,6 @@ then
 fi
 
 # User specific environment and startup programs
-PG_PATH=/usr/pgsql-9.3/bin
-export PG_PATH
-
 export PATH=$PG_PATH:$PATH:$HOME/bin
 
 # Editor
