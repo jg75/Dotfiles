@@ -2,6 +2,7 @@
 
 
 PNAME=$(basename $0)
+ROOT_VIM_DIR=~root/.vim
 VIM_DIR=$HOME/.vim
 BUNDLE_DIR=$VIM_DIR/bundle
 CONFIG_FILE=$BUNDLE_DIR/.bundle.list
@@ -50,6 +51,7 @@ readConfig() {
     }' $FILE
 }
 
+
 updateBundles() {
     eval $(readConfig $CONFIG_FILE)
 
@@ -81,6 +83,14 @@ updateBundles() {
 }
 
 
+updateRootBundles() {
+    echo "Updating root bundles."
+
+    sudo rm -rf $ROOT_VIM_DIR
+    sudo cp -R $VIM_DIR $ROOT_VIM_DIR
+}
+
+
 updateBundlesList() {
     echo "Updating List."
 
@@ -106,8 +116,9 @@ updateBundlesList() {
 
 
 usage() {
-    echo "Usage: $PNAME -[hl]"
+    echo "Usage: $PNAME -[hlu]"
 }
+
 
 while getopts "hl" OPTION
 do
@@ -117,6 +128,8 @@ do
            ;;
         l) updateBundlesList
            ;;
+        u) USER_ONLY=1
+           ;;
         *) usage
            exit 1
            ;;
@@ -125,4 +138,10 @@ done
 
 shift $((OPTIND-1))
 
+
 updateBundles
+
+if [ ${USER_ONLY:=0} != 1 ]
+then
+    updateRootBundles
+fi
