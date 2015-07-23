@@ -20,8 +20,8 @@ export GREP_OPTIONS='--color=auto'
 if [ -s /usr/local/bin/mybash-prompt ]
 then
     . /usr/local/bin/mybash-prompt
-    mybash-prompt-reset newline-color bright-yellow \
-                        delimeter-color bright-yellow \
+    mybash-prompt-reset newline-color bright-green \
+                        delimeter-color bright-green \
                         text-color bright-white \
                         hostname-variable NICKNAME
 fi

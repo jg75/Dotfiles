@@ -7,6 +7,8 @@ then
 fi
 
 # User specific environment and startup programs
+export NICKNAME="Set NICKNAME in .bashrc"
+
 export PATH=$PATH:$HOME/bin
 
 # Editor
@@ -22,7 +24,7 @@ then
 fi
 
 # Amber
-export AMBER_CONFIG='config.StagingConfig'
+export AMBER_CONFIG='config.DevelopmentConfig'
 
 # Colors
 export LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=90'
@@ -32,8 +34,8 @@ export GREP_OPTIONS='--color=auto'
 if [ -s /usr/local/bin/mybash-prompt ]
 then
     . /usr/local/bin/mybash-prompt
-    mybash-prompt-reset newline-color bright-yellow \
-                        delimeter-color bright-yellow \
+    mybash-prompt-reset newline-color bright-green \
+                        delimeter-color bright-green \
                         text-color bright-white \
                         hostname-variable NICKNAME
 fi
