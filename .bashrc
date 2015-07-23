@@ -7,7 +7,10 @@ then
 fi
 
 # User specific environment and startup programs
-export PATH=$PATH:$HOME/bin
+PG_PATH=/usr/pgsql-9.3/bin
+export PG_PATH
+
+export PATH=$PG_PATH:$PATH:$HOME/bin
 
 # Editor
 export EDITOR=/usr/bin/vim
@@ -35,7 +38,7 @@ then
     mybash-prompt-reset newline-color bright-yellow \
                         delimeter-color bright-yellow \
                         text-color bright-white \
-                        hostname $NICKNAME
+                        hostname-variable NICKNAME
 fi
 
 # NVM

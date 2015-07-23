@@ -96,6 +96,8 @@ mybash-prompt-set() {
                         ;;
             hostname) BP_HOSTNAME=$2
                         ;;
+            hostname-variable) BP_HOSTNAME_VARIABLE=$2
+                        ;;
             *) echo "mybash-prompt: Invalid argument: $1" >&2
                         ;;
         esac
@@ -178,6 +180,9 @@ mybash-prompt-ps1() {
     if [ ! -z $BP_HOSTNAME ]
     then
         PS1+=$(mybash-prompt-element " \u@$BP_HOSTNAME:\w ")
+    elif [ ! -z $BP_HOSTNAME_VARIABLE ]
+    then
+        PS1+=$(mybash-prompt-element " \u@\$$BP_HOSTNAME_VARIABLE:\w ")
     else
         PS1+=$(mybash-prompt-element " \u@\h:\w ")
     fi

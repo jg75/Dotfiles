@@ -23,7 +23,7 @@ then
     mybash-prompt-reset newline-color bright-yellow \
                         delimeter-color bright-yellow \
                         text-color bright-white \
-                        hostname $NICKNAME
+                        hostname-variable NICKNAME
 fi
 
 # Vim Man pages
