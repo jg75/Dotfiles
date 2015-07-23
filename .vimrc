@@ -17,6 +17,7 @@ colorscheme ir_black
 set t_Co=256
 set background=dark
 set antialias
+set encoding=utf-8
 
 " Reset options
 set nocompatible
