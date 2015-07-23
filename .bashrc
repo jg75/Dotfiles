@@ -7,7 +7,7 @@ then
 fi
 
 # User specific environment and startup programs
-export PATH=$PG_PATH:$PATH:$HOME/bin
+export PATH=$PATH:$HOME/bin
 
 # Editor
 export EDITOR=/usr/bin/vim
