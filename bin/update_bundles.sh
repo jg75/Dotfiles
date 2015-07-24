@@ -5,6 +5,7 @@ PNAME=$(basename $0)
 ROOT_VIM_DIR=~root/.vim
 VIM_DIR=$HOME/.vim
 BUNDLE_DIR=$VIM_DIR/bundle
+AUTOLOAD_DIR=$VIM_DIR/autoload
 CONFIG_FILE=$BUNDLE_DIR/.bundle.list
 
 
@@ -80,6 +81,13 @@ updateBundles() {
 
         ((COUNT+=1))
     done
+
+    if [ -s $BUNDLE_DIR/vim-pathogen/autoload/pathogen.vim ]
+    then
+        echo "Updating Pathogen."
+
+        cp $BUNDLE_DIR/vim-pathogen/autoload/pathogen.vim $AUTOLOAD_DIR
+    fi
 }
 
 
