@@ -12,6 +12,11 @@ let maplocalleader = '\'
 filetype plugin indent on
 syntax on
 
+if has("macunix")
+  " Enable mouse
+  set mouse=a
+endif
+
 " Colors
 colorscheme ir_black
 set t_Co=256
@@ -75,8 +80,8 @@ set splitright
 " Enable Omni command completion
 set omnifunc=syntaxcomplete#Complete
 set completeopt=menuone,longest,preview
-highlight Pmenu ctermbg=DarkCyan ctermfg=White cterm=bold gui=bold
-highlight PmenuSel ctermbg=DarkMagenta ctermfg=White cterm=bold gui=bold
+highlight Pmenu ctermbg=8 ctermfg=15
+highlight PmenuSel ctermbg=191 ctermfg=0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -146,6 +151,12 @@ function! ToggleColorColumn()
     highlight ColorColumn ctermbg=DarkCyan ctermfg=White
     set colorcolumn=81
   endif
+endfunction
+
+
+function! FixColorColumn()
+  highlight ColorColumn ctermbg=DarkRed ctermfg=black
+  exec 'set colorcolumn=' . join(range(2, 80, 3), ',')
 endfunction
 
 
