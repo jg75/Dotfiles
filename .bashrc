@@ -40,6 +40,18 @@ then
                         hostname-variable NICKNAME
 fi
 
+# Bash Completion
+if [ -s /etc/bash_completion ]
+then
+    . /etc/bash_completion
+fi
+
+# AWS Completion
+if [ -s /usr/bin/aws_completer ]
+then
+    complete -C /usr/bin/aws_completer aws
+fi
+
 # NVM
 if [ -s $HOME/.nvm/nvm.sh ]
 then
