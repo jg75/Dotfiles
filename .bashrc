@@ -6,14 +6,23 @@ then
     . /etc/bashrc
 fi
 
-# User specific environment and startup programs
-export NICKNAME="Set NICKNAME in .bashrc"
-
+# Path
 export PATH=$PATH:$HOME/bin
 
 # Editor
 export EDITOR=/usr/bin/vim
 export VISUAL=$EDITOR
+
+# Prompt
+if [ -s /usr/local/bin/mybash-prompt ]
+then
+    . /usr/local/bin/mybash-prompt
+
+    mybash-prompt-reset newline-color ${NEWLINE_COLOR:=bright-green} \
+                        delimeter-color ${DELIMETER_COLOR:=bright-green} \
+                        text-color ${TEXT_COLOR:=bright-white} \
+                        hostname-variable NICKNAME
+fi
 
 # VirtualEnv
 export WORKON_HOME=$HOME/.virtualenvs
@@ -23,22 +32,9 @@ then
     . /usr/bin/virtualenvwrapper.sh
 fi
 
-# Amber
-export AMBER_CONFIG='config.DevelopmentConfig'
-
 # Colors
 export LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=90'
 export GREP_OPTIONS='--color=auto'
-
-# Prompt
-if [ -s /usr/local/bin/mybash-prompt ]
-then
-    . /usr/local/bin/mybash-prompt
-    mybash-prompt-reset newline-color bright-green \
-                        delimeter-color bright-green \
-                        text-color bright-white \
-                        hostname-variable NICKNAME
-fi
 
 # Bash Completion
 if [ -s /etc/bash_completion ]
