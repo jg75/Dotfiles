@@ -1,8 +1,10 @@
 #! /bin/bash
 
-rm -f /etc/profile.d/amberenv.sh > /dev/null 2> /dev/null
+exec > /dev/null 2>&1
 
-if which supervisorctl > /dev/null 2> /dev/null
+rm -f /etc/profile.d/amberenv.sh
+
+if which supervisorctl
 then
     supervisorctl stop all
 fi
