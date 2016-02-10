@@ -7,6 +7,7 @@ tlib_vim,git@github.com:tomtom/tlib_vim.git
 tmuxline.vim,git@github.com:edkolev/tmuxline.vim.git
 vim-addon-mw-utils,git@github.com:MarcWeber/vim-addon-mw-utils.git
 vim-airline,git@github.com:bling/vim-airline.git
+vim-airline-themes,git@github.com:vim-airline/vim-airline-themes.git
 vim-fugitive,git@github.com:tpope/vim-fugitive.git
 vim-pathogen,git@github.com:tpope/vim-pathogen.git
 vim-snipmate,git@github.com:garbas/vim-snipmate.git

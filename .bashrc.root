@@ -34,9 +34,11 @@ then
 fi
 
 # AWS Completion
-if [ -s /usr/bin/aws_completer ]
+AWS_COMPLETER=$(which aws_completer)
+
+if [ -s $AWS_COMPLETER ]
 then
-    complete -C /usr/bin/aws_completer aws
+    complete -C $AWS_COMPLETER aws
 fi
 
 # Vim Man pages

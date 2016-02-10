@@ -26,10 +26,11 @@ fi
 
 # VirtualEnv
 export WORKON_HOME=$HOME/.virtualenvs
+VENV_WRAPPER=$(which virtualenvwrapper.sh)
 
-if [ -s /usr/bin/virtualenvwrapper.sh ]
+if [ -s $VENV_WRAPPER ]
 then
-    . /usr/bin/virtualenvwrapper.sh
+    . $VENV_WRAPPER
 fi
 
 # Colors
@@ -43,12 +44,22 @@ then
 fi
 
 # AWS Completion
-if [ -s /usr/bin/aws_completer ]
+AWS_COMPLETER=$(which aws_completer)
+
+if [ -s $AWS_COMPLETER ]
 then
-    complete -C /usr/bin/aws_completer aws
+    complete -C $AWS_COMPLETER aws
 fi
 
-# NVM
+# Ruby Version Manager
+RVM_HOME=~/.rvm
+
+if [ -s $RVM_HOME/scripts/rvm ]
+then
+    . $RVM_HOME/scripts/rvm
+fi
+
+# Node Version Manager
 if [ -s $HOME/.nvm/nvm.sh ]
 then
     . $HOME/.nvm/nvm.sh

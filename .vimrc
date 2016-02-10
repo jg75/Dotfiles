@@ -1,4 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " .vimrc
 "  James G.
 "
@@ -31,7 +31,10 @@ set sessionoptions-=options
 " File management
 set hidden
 set confirm
+set undofile
 set undodir=~/.vim/temp
+set undolevels=1000
+set undoreload=10000
 set directory=~/.vim/temp
 set backupdir=~/.vim/backup
 
@@ -40,6 +43,7 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+set infercase
 
 " Enable backspace and indent
 set backspace=indent,eol,start
@@ -119,8 +123,12 @@ function! SyntasticInit()
   let g:syntastic_style_warning_symbol = "S⚠"
   let g:syntastic_javascript_checkers = ['jshint']
   let g:syntastic_json_checkers = ['jsonlint']
+  let g:syntastic_python_checkers = ['python', 'pep8']
+  let g:syntastic_cpp_compiler = 'g++'
+  let g:syntastic_cpp_checkers = [ 'gcc', 'clang' ]
+  let g:syntastic_go_checkers = [ 'golint' ]
   let g:syntastic_disabled_filetypes=['html', 'jinja2']
-  let g:syntastic_mode_map = { 'passive_filetypes': ['java', 'cpp', 'html', 'jinja2'] }
+  let g:syntastic_mode_map = { 'passive_filetypes': ['java', 'html', 'jinja2', 'cpp', 'go'] }
 endfunction
 
 
@@ -147,12 +155,18 @@ endfunction
 function! ToggleColorColumn()
   if &colorcolumn
     set colorcolumn=
+    set nolist
+    set listchars=
+    set nospell
   else
     highlight ColorColumn ctermbg=DarkCyan ctermfg=White
-    set colorcolumn=81
+    set list
+    set listchars=trail:┊,tab:»·
+    set colorcolumn=80
+    set spell spelllang=en_us
   endif
 endfunction
-
+      
 
 function! FixColorColumn()
   highlight ColorColumn ctermbg=DarkRed ctermfg=black
@@ -162,7 +176,7 @@ endfunction
 
 function! LastCursorPosition()
   " Jump to the last cursor position
-  if line("'\"") > 1 && line("'\"") <= line("$") 
+  if line("'\"") > 1 && line("'\"") <= line("$")
     execute "normal! g'\""
   endif
 endfunction
@@ -217,6 +231,7 @@ noremap <silent> <Space> :NERDTreeToggle<CR>
 "nnoremap <Leader>2 :call SetTab(2)<CR>
 "nnoremap <Leader>4 :call SetTab(2)<CR>
 nnoremap <Leader><Leader> :call ToggleColorColumn()<CR>
+nnoremap <LocalLeader><LocalLeader> :Autoformat<CR>
 
 
 " Airline Tabline extension mappings
@@ -291,6 +306,19 @@ augroup END
 
 augroup filetype_java
   autocmd FileType java setlocal shiftwidth=4 softtabstop=4
+augroup END
+
+
+augroup filetype_cpp
+  autocmd BufNewFile,BufRead *.h,*.c,*.cpp set filetype=cpp
+  autocmd BufNewFile,BufRead *.h,*.c,*.cpp set omnifunc=omni#cpp#complete#Main
+  autocmd FileType cpp setlocal shiftwidth=4 softtabstop=4
+augroup END
+
+augroup filetype_go
+  autocmd BufNewFile,BufRead *.h,*.c,*.cpp set filetype=go
+  autocmd FileType go setlocal omnifunc=gocomplete#Complete
+  autocmd FileType cpp setlocal shiftwidth=8 softtabstop=8
 augroup END
 
 
