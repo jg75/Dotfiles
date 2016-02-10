@@ -4,6 +4,10 @@ export VISUAL=$EDITOR
 
 # Homebrew
 BREW_PREFIX=$(brew --prefix)
+if [ -s $HOME/.github ]
+then
+    HOMEBREW_GITHUB_API_TOKEN=$(<$HOME/.github)
+fi
 
 # Path
 XCODE_PATH="`xcode-select -print-path`/usr/bin:`xcode-select -print-path`/Toolchains/XcodeDefault.xctoolchain/usr/bin"
@@ -46,7 +50,7 @@ fi
 # Virtualenv
 VENV_WRAPPER=$(which virtualenvwrapper.sh)
 
-if [ -s $VENV_WRAPPER ]
+if [ ! -z $VENV_WRAPPER ] && [ -s $VENV_WRAPPER ]
 then
   . $VENV_WRAPPER
 fi
@@ -54,7 +58,7 @@ fi
 # AWS
 AWS_COMPLETER=$(which aws_completer)
 
-if [ -s $AWS_COMPLETER ]
+if [ ! -z $AWS_COMPLETER ] && [ -s $AWS_COMPLETER ]
 then
     complete -C $AWS_COMPLETER aws
 fi
@@ -198,6 +202,11 @@ git-cleanup() {
 
 # Settings
 set -o vi
+
+if [ $(whoami) == 'root' ]
+then
+    alias vim='/usr/bin/vim'
+fi
 
 # Aliases
 alias ls="ls -G"
