@@ -1,0 +1,55 @@
+# Editor
+export EDITOR=/usr/bin/vim
+export VISUAL=$EDITOR
+
+# Path
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:."
+
+# Colors
+export CLICOLOR=1
+export LSCOLORS=Exfxcxdxbxegedabagacad
+export GREP_OPTIONS='--color=auto'
+
+# More Colors
+if [ -s $BREW_PREFIX/etc/grc.bashrc ]
+then
+    . $BREW_PREFIX/etc/grc.bashrc
+fi
+
+# Prompt
+if [ -s /usr/local/bin/mybash-prompt ]
+then
+    . /usr/local/bin/mybash-prompt
+    mybash-prompt-reset newline-color bright-cyan \
+                        delimeter-color bright-cyan \
+                        text-color bright-white
+fi
+
+# Bash completion
+if [ -s $BREW_PREFIX/etc/bash_completion ]
+then
+    . $BREW_PREFIX/etc/bash_completion
+fi
+
+# Vim Man pages
+vman() {
+    vim -c "SuperMan $*"
+
+    if [ $? -ne 0 ]
+    then
+        echo "No manual entry for $*"
+    fi
+}
+
+# Settings
+set -o vi
+
+if [ $(whoami) == 'root' ]
+then
+    alias vim='/usr/bin/vim'
+fi
+
+# Aliases
+alias ls="ls -G"
+alias cls="clear && printf '\e[3J'"
+alias vi=vim

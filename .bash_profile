@@ -3,23 +3,24 @@ export EDITOR=/usr/bin/vim
 export VISUAL=$EDITOR
 
 # Homebrew
-BREW_PREFIX=$(brew --prefix)
+export BREW_PREFIX=$(brew --prefix)
+
 if [ -s $HOME/.github ]
 then
-    HOMEBREW_GITHUB_API_TOKEN=$(<$HOME/.github)
+    export HOMEBREW_GITHUB_API_TOKEN=$(<$HOME/.github)
 fi
 
 # Path
 XCODE_PATH="`xcode-select -print-path`/usr/bin:`xcode-select -print-path`/Toolchains/XcodeDefault.xctoolchain/usr/bin"
-POSTGRESQL93='/Library/PostgreSQL/9.3'
+POSTGRESQL='/Applications/Postgres.app/Contents/Versions/9.5'
 NPM_BIN=$HOME/.npm/bin
 RVM_BIN=$HOME/.rvm/bin
 
 # GO
-export GOROOT=$(brew --cellar go)/1.5.1/libexec
+export GOROOT=$(brew --cellar go)/1.5.3/libexec
 export GOPATH=$HOME/Work/go
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:$XCODE_PATH:$POSTGRESQL93/bin:$NPM_BIN:$RVM_BIN:$GOROOT/bin:$GOPATH/bin:$HOME/bin:."
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:$XCODE_PATH:$POSTGRESQL/bin:$NPM_BIN:$RVM_BIN:$GOROOT/bin:$GOPATH/bin:$HOME/bin:."
 
 # Colors
 export CLICOLOR=1
@@ -112,7 +113,6 @@ docker-names() {
         done
     fi
 }
-
 
 docker-stop() {
     # Stop running containter(s)
@@ -212,3 +212,5 @@ fi
 alias ls="ls -G"
 alias cls="clear && printf '\e[3J'"
 alias vi=vim
+alias redis-server="redis-server $BREW_PREFIX/etc/redis.conf"
+alias mongod="mongod --config $BREW_PREFIX/etc/mongod.conf"
