@@ -13,41 +13,41 @@ readConfig() {
     FILE=$1
 
     awk 'BEGIN{
-        comment = "#"
-        count = 0
+    comment = "#"
+    count = 0
+}
+
+function stripComments(line) {
+if (line ~ comment) {
+    line = substr(line, 0, index(line, comment) -1)
+}
+
+return line
     }
 
-    function stripComments(line) {
-       if (line ~ comment) {
-           line = substr(line, 0, index(line, comment) -1)
-       }
-       
-       return line
-    }
-    
     function trim(line) {
-        gsub(/^( )+/, "", line)
-        gsub(/( )+$/, "", line)
+    gsub(/^( )+/, "", line)
+    gsub(/( )+$/, "", line)
 
-        return line
+    return line
+}
+
+{
+    line = trim(stripComments($0))
+
+    if (line ~ /^$/) {
+        next
     }
 
-    {
-        line = trim(stripComments($0))
+    count += 1
+    nf = split(line, fields, ",")
+    name = fields[1]
+    repository = fields[2]
 
-        if (line ~ /^$/) {
-            next
-        }
+    printf("BUNDLE_NAME[%s]=%s;\n", count, name)
+    printf("BUNDLE_REPO[%s]=%s;\n", count, repository)
 
-        count += 1
-        nf = split(line, fields, ",")
-        name = fields[1]
-        repository = fields[2]
-
-        printf("BUNDLE_NAME[%s]=%s;\n", count, name)
-        printf("BUNDLE_REPO[%s]=%s;\n", count, repository)
-
-    }END{
+}END{
 
     }' $FILE
 }
@@ -128,24 +128,28 @@ usage() {
 }
 
 
-while getopts "hlu" OPTION
+while getopts "hiu" OPTION
 do
     case $OPTION in
         h) usage
-           exit
-           ;;
-        l) updateBundlesList
-           ;;
+            exit
+            ;;
+        i) INSTALL_ONLY=1
+            ;;
         u) USER_ONLY=1
-           ;;
+            ;;
         *) usage
-           exit 1
-           ;;
+            exit 1
+            ;;
     esac
 done
 
 shift $((OPTIND-1))
 
+if [ ${INSTALL_ONLY:=0} != 1 ]
+then
+    updateBundlesList
+fi
 
 updateBundles
 
