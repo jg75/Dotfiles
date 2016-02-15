@@ -9,6 +9,7 @@ tmuxline.vim,git@github.com:edkolev/tmuxline.vim.git
 vim-addon-mw-utils,git@github.com:MarcWeber/vim-addon-mw-utils.git
 vim-airline,git@github.com:bling/vim-airline.git
 vim-airline-themes,git@github.com:vim-airline/vim-airline-themes.git
+vim-autoformat,git@github.com:Chiel92/vim-autoformat.git
 vim-fugitive,git@github.com:tpope/vim-fugitive.git
 vim-snipmate,git@github.com:garbas/vim-snipmate.git
 vim-superman,git@github.com:jez/vim-superman.git
