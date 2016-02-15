@@ -6,8 +6,12 @@ then
     . /etc/bashrc
 fi
 
+# GoLang
+export GOROOT=/usr/lib/golang
+export GOPATH=$HOME/go
+
 # Path
-export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$HOME/bin
 
 # Editor
 export EDITOR=/usr/bin/vim
