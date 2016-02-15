@@ -142,7 +142,7 @@ updateBundlesList() {
 
 
 usage() {
-    echo "Usage: $PNAME -[hlu]"
+    echo "Usage: $PNAME -[hiu]"
 }
 
 
