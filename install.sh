@@ -78,5 +78,11 @@ do
     cp -r $DIR $HOME
 done
 
-pip install -r requirements.txt
+if [ $UNAME = 'Darwin' ]
+then
+    pip install -r requirements.txt
+else
+    sudo pip install -r requirements.txt
+fi
+
 $HOME/bin/update_bundles.sh
