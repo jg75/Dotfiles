@@ -1,0 +1,14 @@
+bash-completion
+elasticsearch
+gawk
+git
+go
+grc
+mongodb
+nvm
+python
+python3
+rabbitmq
+redis
+vim
+wget

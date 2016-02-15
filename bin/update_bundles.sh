@@ -6,7 +6,10 @@ ROOT_VIM_DIR=~root/.vim
 VIM_DIR=$HOME/.vim
 BUNDLE_DIR=$VIM_DIR/bundle
 AUTOLOAD_DIR=$VIM_DIR/autoload
+PLUGIN_DIR=$VIM_DIR/plugin
 CONFIG_FILE=$BUNDLE_DIR/.bundle.list
+PATHOGEN=vim-pathogen/autoload/pathogen.vim
+PYDOC=pydoc.vim/ftplugin/python_pydoc.vim 
 
 
 readConfig() {
@@ -53,6 +56,14 @@ return line
 }
 
 
+updatePathogen() {
+    PATHOGEN=vim-pathogen/autoload/pathogen.vim
+    PYDOC=pydoc.vim/ftplugin/python_pydoc.vim 
+
+    cp $BUNDLE_DIR/$PATHOGEN $AUTOLOAD_DIR
+    cp $BUNDLE_DIR/$PYDOC $PLUGIN_DIR
+}
+
 updateBundles() {
     eval $(readConfig $CONFIG_FILE)
 
@@ -82,11 +93,18 @@ updateBundles() {
         ((COUNT+=1))
     done
 
-    if [ -s $BUNDLE_DIR/vim-pathogen/autoload/pathogen.vim ]
+    if [ -s $BUNDLE_DIR/$PATHOGEN ]
     then
         echo "Updating Pathogen."
 
-        cp $BUNDLE_DIR/vim-pathogen/autoload/pathogen.vim $AUTOLOAD_DIR
+        cp $BUNDLE_DIR/$PATHOGEN $AUTOLOAD_DIR
+    fi
+
+    if [ -s $BUNDLE_DIR/$PYDOC ]
+    then
+        echo "Updating Pydoc."
+
+        cp $BUNDLE_DIR/$PYDOC $PLUGIN_DIR
     fi
 }
 
@@ -151,6 +169,7 @@ then
     updateBundlesList
 fi
 
+updatePathogen
 updateBundles
 
 if [ ${USER_ONLY:=0} != 1 ]
