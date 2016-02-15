@@ -63,22 +63,16 @@ fi
 cp $DIRNAME/$BASH_PROFILE $HOME
 sudo cp $DIRNAME/$BASH_PROFILE.root ~root/$BASH_PROFILE
 
-for FILE in $(find $DIRNAME -type f \
-                   -mindepth 1 -maxdepth 1 \
-                   \( ! -name "$PNAME" \
-                   -a ! -name "README.md" \
-                   -a ! -name ".bash_profile*" \
-                   -a ! -name ".bashrc*" \))
+for FILE in $(find $DIRNAME -mindepth 1 -maxdepth 1 -type d \
+                   \( ! -name "$PNAME" -a ! -name "README.md" \
+                   -a ! -name ".bash_profile*" -a ! -name ".bashrc*" \))
 do
     cp $FILE $HOME
     sudo cp $FILE ~root
 done
 
-for DIR in $(find $DIRNAME -type d \
-                  -mindepth 1 -maxdepth 1 \
-                  \( ! -name "usr" \
-                  -a ! -name "var" \
-                  -a ! -name ".git" \))
+for DIR in $(find $DIRNAME -mindepth 1 -maxdepth 1 -type d \
+                  \( ! -name "usr" -a ! -name "var"  -a ! -name ".git" \))
 do
     mkdir -p $HOME/$(basename $DIR)
     cp -r $DIR $HOME
