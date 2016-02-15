@@ -43,7 +43,7 @@ then
             then
                 for FILE in $(find $SOURCE_DIR -type f)
                 do
-                    sudo cp $FILE $DIR
+                    echo sudo cp $FILE $DIR
                 done
             fi
         done
@@ -55,9 +55,9 @@ fi
 
 if [ $(ls -dl /usr/local/bin | awk '{ print $3 }') != $(whoami) ]
 then
-    sudo cp $DIRNAME/usr/local/bin/* /usr/local/bin
+    echo sudo cp $DIRNAME/usr/local/bin/* /usr/local/bin
 else
-    cp $DIRNAME/usr/local/bin/* /usr/local/bin
+    echo cp $DIRNAME/usr/local/bin/* /usr/local/bin
 fi
 
 cp $DIRNAME/$BASH_PROFILE $HOME
@@ -67,15 +67,15 @@ for FILE in $(find $DIRNAME -mindepth 1 -maxdepth 1 -type d \
                    \( ! -name "$PNAME" -a ! -name "README.md" \
                    -a ! -name ".bash_profile*" -a ! -name ".bashrc*" \))
 do
-    cp $FILE $HOME
-    sudo cp $FILE ~root
+    echo cp $FILE $HOME
+    echo sudo cp $FILE ~root
 done
 
 for DIR in $(find $DIRNAME -mindepth 1 -maxdepth 1 -type d \
                   \( ! -name "usr" -a ! -name "var"  -a ! -name ".git" \))
 do
-    mkdir -p $HOME/$(basename $DIR)
-    cp -r $DIR $HOME
+    echo mkdir -p $HOME/$(basename $DIR)
+    echo cp -r $DIR $HOME
 done
 
 if [ $UNAME = 'Darwin' ]
@@ -83,7 +83,6 @@ then
     pip install -r requirements.txt
     $HOME/bin/update_bundles.sh
 else
-    sudo pip install -r requirements.txt
     $HOME/bin/update_bundles.sh -i
 fi
 
