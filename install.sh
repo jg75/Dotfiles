@@ -82,8 +82,8 @@ done
 if [ $UNAME = 'Darwin' ]
 then
     pip install -r requirements.txt
-    $HOME/bin/update_bundles.sh
+    $DIRNAME/update_bundles.sh
 else
-    $HOME/bin/update_bundles.sh -i
+    $DIRNAME/update_bundles.sh -i
 fi
 
