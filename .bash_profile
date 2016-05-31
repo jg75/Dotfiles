@@ -65,7 +65,7 @@ then
 fi
 
 # Ruby Version Manager
-RVM_HOME=~/.rvm
+export RVM_HOME=~/.rvm
 
 if [ -s $RVM_HOME/scripts/rvm ]
 then
@@ -73,11 +73,11 @@ then
 fi
 
 # Node Version Manager
-NVM_ENV_HOME=$(brew --prefix nvm)
+export NVM_DIR=$HOME/.nvm
 
-if [ -s $NVM_ENV_HOME/nvm.sh ]
+if [ -s $(brew --prefix nvm)/nvm.sh ]
 then
-  . $NVM_ENV_HOME/nvm.sh
+  . $(brew --prefix nvm)/nvm.sh
 fi
 
 # Vim Man pages
