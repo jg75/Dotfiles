@@ -11,4 +11,5 @@ python3
 rabbitmq
 redis
 vim
+macvim
 wget
