@@ -16,9 +16,7 @@ awk -v quote="'" \
     txtValue = ""
 }{
     if (NR == 1) {
-        gsub(/\[/, "")
-        gsub(/\]/, "")
-        gsub(/,/, "")
+        gsub(/[\[|\,\]]/, "")
 
         if ($2 ~ /^.+\.\.\..+$/) {
             branch = substr($2, 1, index($2, "...")-1)
