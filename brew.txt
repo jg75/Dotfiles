@@ -1,14 +1,11 @@
 bash-completion
-elasticsearch17
 gawk
 git
 go
-mongodb
+grc
 nvm
 python
 python3
-rabbitmq
-redis
 vim
 macvim
 wget

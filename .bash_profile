@@ -11,13 +11,14 @@ then
 fi
 
 # Path
+export PGDATA="$HOME/Library/Application Support/Postgres/var-9.5"
 XCODE_PATH="`xcode-select -print-path`/usr/bin:`xcode-select -print-path`/Toolchains/XcodeDefault.xctoolchain/usr/bin"
 POSTGRESQL='/Applications/Postgres.app/Contents/Versions/9.5'
 NPM_BIN=$HOME/.npm/bin
 RVM_BIN=$HOME/.rvm/bin
 
 # GO
-export GOROOT=$(brew --cellar go)/1.5.3/libexec
+export GOROOT=$(brew --cellar go)/1.6.2/libexec
 export GOPATH=$HOME/Work/go
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:$XCODE_PATH:$POSTGRESQL/bin:$NPM_BIN:$RVM_BIN:$GOROOT/bin:$GOPATH/bin:$HOME/bin:."
@@ -34,7 +35,7 @@ then
 fi
 
 # Prompt
-if [ -s /usr/local/bin/mybash-prompt ]
+if [ -x /usr/local/bin/mybash-prompt ]
 then
     . /usr/local/bin/mybash-prompt
     mybash-prompt-reset newline-color bright-cyan \
@@ -49,36 +50,28 @@ then
 fi
 
 # Virtualenv
-VENV_WRAPPER=$(which virtualenvwrapper.sh)
+VENV_WRAPPER=/usr/local/bin/virtualenvwrapper.sh
 
-if [ ! -z $VENV_WRAPPER ] && [ -s $VENV_WRAPPER ]
+if [ -x $VENV_WRAPPER ]
 then
-  . $VENV_WRAPPER
+    . $VENV_WRAPPER
 fi
 
 # AWS
-AWS_COMPLETER=$(which aws_completer)
+AWS_COMPLETER=/usr/local/bin/aws_completer
 
-if [ ! -z $AWS_COMPLETER ] && [ -s $AWS_COMPLETER ]
+if [ -x $AWS_COMPLETER ]
 then
     complete -C $AWS_COMPLETER aws
 fi
 
-# Ruby Version Manager
-export RVM_HOME=~/.rvm
-
-if [ -s $RVM_HOME/scripts/rvm ]
-then
-    . $RVM_HOME/scripts/rvm
-fi
-
 # Node Version Manager
-export NVM_DIR=$HOME/.nvm
+#export NVM_DIR=$HOME/.nvm
 
-if [ -s $(brew --prefix nvm)/nvm.sh ]
-then
-  . $(brew --prefix nvm)/nvm.sh
-fi
+#if [ -s $(brew --prefix nvm)/nvm.sh ]
+#then
+#    . $(brew --prefix nvm)/nvm.sh
+#fi
 
 # Vim Man pages
 vman() {
@@ -87,84 +80,6 @@ vman() {
     if [ $? -ne 0 ]
     then
         echo "No manual entry for $*"
-    fi
-}
-
-docker-start() {
-    # Start Docker Machine on Mac OS X
-    DOCKER_SCRIPTS="/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts"
-
-    if [ -x "$DOCKER_SCRIPTS/start.sh" ]
-    then
-        . "$DOCKER_SCRIPTS/start.sh"
-    fi
-}
-
-docker-names() {
-    # Docker name list of all running containers
-    if [ $# -eq 0 ]
-    then 
-        docker ps | awk 'NR > 1 { print $NF }'
-    else
-        for APP in $@
-        do
-            docker ps | awk 'NR > 1 && $2 == app { print $NF }' app=$1
-            shift
-        done
-    fi
-}
-
-docker-stop() {
-    # Stop running containter(s)
-    for NAME in $(docker-names $@)
-    do
-        docker stop $NAME
-    done
-}
-
-docker-kill() {
-    # Stop running container(s)
-    # Delete docker image(s)
-    docker-stop $@
-
-    if [ $# -eq 0 ]
-    then 
-        docker images | awk 'NR > 1 { print $3 }' | xargs docker rmi -f
-    else
-        for APP in $@
-        do
-            docker images | awk 'NR > 1 && $1 == app { print $3 }' app=$1 | xargs docker rmi -f
-            shift
-        done
-    fi
-}
-
-docker-api() {
-    docker-start
-    docker-stop postgres mongo elasticsearch
-    docker run -d -p 5432:5432 --net=host postgres
-    docker run -d -p 27017:27017 --net=host mongo --smallfiles
-    docker run -d -p 9200:9200 -p 9300:9300 elasticsearch --network.host _non_loopback_
-
-    export PG_DOCKER=$(docker-names postgres)
-    export PG_DB_USER=postgres
-}
-
-run-go-tests() {
-    for dir in $(find $@ -type f -name "*_test.go" -exec dirname {} \; | sort -u)
-    do
-        cd $dir
-        go test
-        cd -
-    done
-}
-
-go-test() {
-    if [ $# -eq 0 ]
-    then
-        run-go-tests .
-    else
-        run-go-tests $@
     fi
 }
 
@@ -200,6 +115,11 @@ git-cleanup() {
     done
 }
 
+if [ -s $HOME/.fabrc.bash ]
+then
+    . ~/.fabrc.bash
+fi
+
 # Settings
 set -o vi
 
@@ -210,7 +130,4 @@ fi
 
 # Aliases
 alias ls="ls -G"
-alias cls="clear && printf '\e[3J'"
 alias vi=vim
-alias redis-server="redis-server $BREW_PREFIX/etc/redis.conf"
-alias mongod="mongod --config $BREW_PREFIX/etc/mongod.conf"
