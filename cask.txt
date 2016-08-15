@@ -1,4 +1,0 @@
-google-chrome
-iterm2
-java
-postgres

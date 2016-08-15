@@ -55,14 +55,6 @@ then
     complete -C $AWS_COMPLETER aws
 fi
 
-# Ruby Version Manager
-RVM_HOME=~/.rvm
-
-if [ -s $RVM_HOME/scripts/rvm ]
-then
-    . $RVM_HOME/scripts/rvm
-fi
-
 # Node Version Manager
 if [ -s $HOME/.nvm/nvm.sh ]
 then
@@ -76,45 +68,6 @@ vman() {
     if [ $? -ne 0 ]
     then
         echo "No manual entry for $*"
-    fi
-}
-
-docker-names() {
-    # Docker name list of all running containers
-    if [ $# -eq 0 ]
-    then 
-        docker ps | awk 'NR > 1 { print $NF }'
-    else
-        for APP in $@
-        do
-            docker ps | awk 'NR > 1 && $2 == app { print $NF }' app=$1
-            shift
-        done
-    fi
-}
-
-docker-stop() {
-    # Stop running containter(s)
-    for NAME in $(docker-names $@)
-    do
-        docker stop $NAME
-    done
-}
-
-docker-kill() {
-    # Stop running container(s)
-    # Delete docker image(s)
-    docker-stop $@
-
-    if [ $# -eq 0 ]
-    then 
-        docker images | awk 'NR > 1 { print $3 }' | xargs docker rmi -f
-    else
-        for APP in $@
-        do
-            docker images | awk 'NR > 1 && $1 == app { print $3 }' app=$1 | xargs docker rmi -f
-            shift
-        done
     fi
 }
 
