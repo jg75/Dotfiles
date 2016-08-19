@@ -73,6 +73,7 @@ vman() {
 
 # Settings
 set -o vi
+set -m
 
 # Aliases
 alias ls="ls --color"
