@@ -62,6 +62,8 @@ fi
 
 cp $DIRNAME/$BASH_PROFILE $HOME
 sudo cp $DIRNAME/$BASH_PROFILE.root ~root/$BASH_PROFILE
+cp $DIRNAME/.vimrc $HOME
+sudo cp $DIRNAME/.vimrc ~root
 
 for DIR in $(find $DIRNAME -mindepth 1 -maxdepth 1 -type d \
                   \( ! -name "usr" -a ! -name "var"  -a ! -name ".git" \))
