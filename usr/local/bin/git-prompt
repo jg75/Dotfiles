@@ -6,7 +6,7 @@ git status --branch \
            --porcelain 2> /dev/null |
 awk -v quote="'" \
    -v branchGraphic=$'\xEE\x82\xA0' \
-   -v separator=$'\xE2\x9A\xA1' \
+   -v separator=$'\xe2\x9c\x97' \
    -v behindChar=$'\xEF\xBF\xA9' \
    -v aheadChar=$'\xEF\xBF\xAB' 'BEGIN{
     alert = 0
