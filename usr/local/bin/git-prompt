@@ -7,6 +7,7 @@ git status --branch \
 awk -v quote="'" \
    -v branchGraphic=$'\xEE\x82\xA0' \
    -v uncheckedChar=$'\xe2\x9c\x97' \
+   -v checkedChar=$'\xe2\x9c\x94' \
    -v behindChar=$'\xEF\xBF\xA9' \
    -v aheadChar=$'\xEF\xBF\xAB' 'BEGIN{
     alert = 0
@@ -55,7 +56,11 @@ awk -v quote="'" \
     }
 
     if (modified > 0) {
-        txtValue = sprintf("%s%s%s", txtValue, uncheckedChar, modified)
+        txtValue = sprintf("%s %s%s", txtValue, uncheckedChar, modified)
+    }
+
+    if (behind == 0 && ahead == 0 && modified == 0) {
+        txtValue = sprintf("%s %s", txtValue, checkedChar)
     }
 
     if (length(txtValue) > 0) {
