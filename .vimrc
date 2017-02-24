@@ -121,9 +121,9 @@ function! SyntasticInit()
   let g:syntastic_warning_symbol = "⚠"
   let g:syntastic_style_error_symbol = "S✗"
   let g:syntastic_style_warning_symbol = "S⚠"
-  let g:syntastic_javascript_checkers = ['jshint']
+  let g:syntastic_javascript_checkers = ['eslint']
   let g:syntastic_json_checkers = ['jsonlint']
-  let g:syntastic_python_checkers = ['python', 'pep8']
+  let g:syntastic_python_checkers = ['python3', 'flake8']
   let g:syntastic_cpp_compiler = 'g++'
   let g:syntastic_cpp_checkers = [ 'gcc', 'clang' ]
   let g:syntastic_go_checkers = [ 'golint' ]
@@ -134,6 +134,11 @@ endfunction
 
 function! SuperTabInit()
   let g:SuperTabDefaultCompletionType = "context"
+endfunction
+
+
+function! Flake8Init()
+  let g:flake8_show_in_file=1
 endfunction
 
 
@@ -158,15 +163,19 @@ function! ToggleColorColumn()
     set nolist
     set listchars=
     set nospell
+    set number
+    set norelativenumber
   else
     highlight ColorColumn ctermbg=DarkCyan ctermfg=White
     set list
     set listchars=trail:┊,tab:»·
     set colorcolumn=80
     set spell spelllang=en_us
+    set number
+    set relativenumber
   endif
 endfunction
-      
+
 
 function! FixColorColumn()
   highlight ColorColumn ctermbg=DarkRed ctermfg=black
@@ -200,6 +209,7 @@ call AirlineInit()
 call TmuxlineInit()
 call SyntasticInit()
 call SuperTabInit()
+call Flake8Init()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -298,7 +308,7 @@ augroup END
 
 augroup filetype_ruby
   autocmd FileType ruby setlocal shiftwidth=2 softtabstop=2
-  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
+  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
   autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
   autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 augroup END
