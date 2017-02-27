@@ -190,7 +190,7 @@ mybash-prompt-ps1() {
     if which git-prompt > /dev/null 2> /dev/null &&
        [ "$(git rev-parse --is-inside-work-tree 2> /dev/null || echo 'false')" == 'true' ]
     then
-        export BP_BRIGHT_RED BP_BRIGHT_GREEN BP_TXT_COLOR
+        export BP_BRIGHT_RED BP_BRIGHT_YELLOW BP_BRIGHT_GREEN BP_TXT_COLOR
 
         PS1+=$(mybash-prompt-element " $(git-prompt) ")
     fi

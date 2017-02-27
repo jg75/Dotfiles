@@ -48,11 +48,21 @@ awk -v quote="'" \
     }
 
     if (behind > 0) {
-        txtValue = sprintf("%s%s%s", behind, behindChar, txtValue)
+        txtValue = sprintf("%s%s%s%s%s",
+                           ENVIRON["BP_BRIGHT_YELLOW"],
+                           behind,
+                           behindChar,
+                           ENVIRON["BP_TXT_COLOR"],
+                           txtValue)
     }
 
     if (ahead > 0) {
-        txtValue = sprintf("%s%s%s", txtValue, aheadChar, ahead)
+        txtValue = sprintf("%s%s%s%s%s",
+                           txtValue,
+                           ENVIRON["BP_BRIGHT_YELLOW"],
+                           aheadChar,
+                           ahead,
+                           ENVIRON["BP_TXT_COLOR"])
     }
 
     if (modified > 0) {
