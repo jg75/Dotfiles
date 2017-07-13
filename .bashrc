@@ -20,8 +20,8 @@ then
 
     if [ $(id -u) -eq 0 ]
     then
-        NEWLINE_COLOR=bright-red
-        DELIMETER_COLOR=bright-red
+        NEWLINE_COLOR=red
+        DELIMETER_COLOR=red
     fi
 
     mybash-prompt-reset newline-color ${NEWLINE_COLOR:=yellow} \
