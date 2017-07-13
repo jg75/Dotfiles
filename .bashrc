@@ -6,12 +6,8 @@ then
     . /etc/bashrc
 fi
 
-# GoLang
-export GOROOT=/usr/lib/golang
-export GOPATH=$HOME/go
-
 # Path
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$HOME/bin
+export PATH=$PATH:$HOME/bin:.
 
 # Editor
 export EDITOR=/usr/bin/vim
@@ -22,19 +18,16 @@ if [ -s /usr/local/bin/mybash-prompt ]
 then
     . /usr/local/bin/mybash-prompt
 
-    mybash-prompt-reset newline-color ${NEWLINE_COLOR:=bright-green} \
-                        delimeter-color ${DELIMETER_COLOR:=bright-green} \
+    if [ $(id -u) -eq 0 ]
+    then
+        NEWLINE_COLOR=bright-red
+        DELIMETER_COLOR=bright-red
+    fi
+
+    mybash-prompt-reset newline-color ${NEWLINE_COLOR:=yellow} \
+                        delimeter-color ${DELIMETER_COLOR:=yellow} \
                         text-color ${TEXT_COLOR:=bright-white} \
                         hostname-variable NICKNAME
-fi
-
-# VirtualEnv
-export WORKON_HOME=$HOME/.virtualenvs
-VENV_WRAPPER=$(which virtualenvwrapper.sh)
-
-if [ -s $VENV_WRAPPER ]
-then
-    . $VENV_WRAPPER
 fi
 
 # Colors
@@ -55,12 +48,6 @@ then
     complete -C $AWS_COMPLETER aws
 fi
 
-# Node Version Manager
-if [ -s $HOME/.nvm/nvm.sh ]
-then
-    . $HOME/.nvm/nvm.sh
-fi
-
 # Vim Man pages
 vman() {
     vim -c "SuperMan $*"
@@ -77,5 +64,4 @@ set -m
 
 # Aliases
 alias ls="ls --color"
-alias cls="clear && printf '\e[3J'"
 alias vi=vim

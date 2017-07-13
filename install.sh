@@ -61,7 +61,7 @@ else
 fi
 
 cp $DIRNAME/$BASH_PROFILE $HOME
-sudo cp $DIRNAME/$BASH_PROFILE.root ~root/$BASH_PROFILE
+sudo cp $DIRNAME/$BASH_PROFILE ~root/$BASH_PROFILE
 cp $DIRNAME/.vimrc $HOME
 sudo cp $DIRNAME/.vimrc ~root
 
