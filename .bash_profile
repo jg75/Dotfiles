@@ -1,6 +1,12 @@
+# Path
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
+
 # Editor
 export EDITOR=/usr/bin/vim
 export VISUAL=$EDITOR
+
+# History
+export HISTSIZE=5000
 
 # Homebrew
 export BREW_PREFIX=$(brew --prefix)
@@ -10,18 +16,55 @@ then
     export HOMEBREW_GITHUB_API_TOKEN=$(<$HOME/.github)
 fi
 
-# Path
-export PGDATA="$HOME/Library/Application Support/Postgres/var-9.5"
-XCODE_PATH="`xcode-select -print-path`/usr/bin:`xcode-select -print-path`/Toolchains/XcodeDefault.xctoolchain/usr/bin"
-POSTGRESQL='/Applications/Postgres.app/Contents/Versions/9.5'
-NPM_BIN=$HOME/.npm/bin
-RVM_BIN=$HOME/.rvm/bin
+export PGDATA=$BREW_PREFIX/var/postgres
+export PGLOG=$PGDATA/pg_log
 
-# GO
-export GOROOT=$(brew --cellar go)/1.6.2/libexec
+# Xcode
+XCODE_PATH="$(xcode-select -print-path)/usr/bin:$(xcode-select -print-path)/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+
+export GOROOT=$(brew --cellar go)/1.8.3/libexec
 export GOPATH=$HOME/Work/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:$XCODE_PATH:$POSTGRESQL/bin:$NPM_BIN:$RVM_BIN:$GOROOT/bin:$GOPATH/bin:$HOME/bin:."
+
+if [ -s /usr/local/bin/virtualenvwrapper.sh ]
+then
+    export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+    export WORKON_HOME=~/.virtualenvs
+
+    . /usr/local/bin/virtualenvwrapper.sh
+fi
+
+#if [ -s $BREW_PREFIX/etc/docker-completion ]
+#then
+#    . $BREW_PREFIX/etc/docker-completion
+#fi
+
+# Node
+if [ -s $(brew --prefix nvm)/nvm.sh ]
+then
+    export NVM_DIR=$HOME/.nvm
+    export NPM_DIR=$HOME/.npm
+
+    . $(brew --prefix nvm)/nvm.sh
+
+    export PATH=$PATH:$NVM_BIN
+fi
+
+
+# Bash completion
+if [ -s $BREW_PREFIX/etc/bash_completion ]
+then
+    . $BREW_PREFIX/etc/bash_completion
+fi
+
+# AWSCLI completions
+AWS_COMPLETER=/usr/local/bin/aws_completer
+
+if [ -x $AWS_COMPLETER ]
+then
+    complete -C $AWS_COMPLETER aws
+fi
 
 # Colors
 export CLICOLOR=1
@@ -34,6 +77,11 @@ then
     . $BREW_PREFIX/etc/grc.bashrc
 fi
 
+if [ -s $HOME/.fabrc.bash ]
+then
+    . ~/.fabrc.bash
+fi
+
 # Prompt
 if [ -x /usr/local/bin/mybash-prompt ]
 then
@@ -43,35 +91,7 @@ then
                         text-color bright-white
 fi
 
-# Bash completion
-if [ -s $BREW_PREFIX/etc/bash_completion ]
-then
-    . $BREW_PREFIX/etc/bash_completion
-fi
-
-# Virtualenv
-VENV_WRAPPER=/usr/local/bin/virtualenvwrapper.sh
-
-if [ -x $VENV_WRAPPER ]
-then
-    . $VENV_WRAPPER
-fi
-
-# AWS
-AWS_COMPLETER=/usr/local/bin/aws_completer
-
-if [ -x $AWS_COMPLETER ]
-then
-    complete -C $AWS_COMPLETER aws
-fi
-
-# Node Version Manager
-#export NVM_DIR=$HOME/.nvm
-
-#if [ -s $(brew --prefix nvm)/nvm.sh ]
-#then
-#    . $(brew --prefix nvm)/nvm.sh
-#fi
+export PATH=$PATH:.
 
 # Vim Man pages
 vman() {
@@ -115,19 +135,41 @@ git-cleanup() {
     done
 }
 
-if [ -s $HOME/.fabrc.bash ]
-then
-    . ~/.fabrc.bash
-fi
+git-rename-tag() {
+    old=$1
+    new=$(awk -v tag=$old 'BEGIN{printf("v0.%s\n", substr(tag, 2))}')
+
+    if [ "$(git tag -l $new)" == "$new" ]
+    then
+        echo $new already exists
+    else
+        git tag $new $old
+        git tag -d $old
+        git push origin :refs/tags/$old
+        git push --tags
+    fi
+}
+
+git-branch-poopy() {
+    git rev-parse --abbrev-ref HEAD | grep -v HEAD ||
+        git describe --exact-match HEAD 2> /dev/null ||
+        git rev-parse HEAD
+}
+
+git-checked-out() {
+    git reflog HEAD | awk '/checkout:/{print $NF; exit}'
+}
+
 
 # Settings
 set -o vi
 
+# Aliases
 if [ $(whoami) == 'root' ]
 then
     alias vim='/usr/bin/vim'
 fi
 
-# Aliases
 alias ls="ls -G"
 alias vi=vim
+alias cat='ccat --bg=dark'

@@ -105,10 +105,10 @@ function! AirlineInit()
 endfunction
 
 
-function! TmuxlineInit()
+" function! TmuxlineInit()
   " Match Airline theme
-  let g:tmuxline_theme = 'airline'
-endfunction
+  " let g:tmuxline_theme = 'airline'
+" endfunction
 
 
 function! SyntasticInit()
@@ -122,8 +122,10 @@ function! SyntasticInit()
   let g:syntastic_style_error_symbol = "S✗"
   let g:syntastic_style_warning_symbol = "S⚠"
   let g:syntastic_javascript_checkers = ['eslint']
+  let g:syntastic_typescript_checkers = ['tslint']
   let g:syntastic_json_checkers = ['jsonlint']
-  let g:syntastic_python_checkers = ['python3', 'flake8']
+  let g:syntastic_yaml_checkers = ['yaml-lint']
+  let g:syntastic_python_checkers = ['pep8', 'pyflakes', 'pycodestyle', 'pydocstyle']
   let g:syntastic_cpp_compiler = 'g++'
   let g:syntastic_cpp_checkers = [ 'gcc', 'clang' ]
   let g:syntastic_go_checkers = [ 'golint' ]
@@ -134,11 +136,6 @@ endfunction
 
 function! SuperTabInit()
   let g:SuperTabDefaultCompletionType = "context"
-endfunction
-
-
-function! Flake8Init()
-  let g:flake8_show_in_file=1
 endfunction
 
 
@@ -206,10 +203,9 @@ call MakeDir($HOME . '/.vim/snippets')
 call pathogen#infect()
 call pathogen#helptags()
 call AirlineInit()
-call TmuxlineInit()
+" call TmuxlineInit()
 call SyntasticInit()
 call SuperTabInit()
-call Flake8Init()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -238,8 +234,8 @@ nnoremap <C-L> <C-W>l
 noremap <silent> <Space> :NERDTreeToggle<CR>
 
 " Mappings to change the number of spaces in tabs and indent
-"nnoremap <Leader>2 :call SetTab(2)<CR>
-"nnoremap <Leader>4 :call SetTab(2)<CR>
+" nnoremap <Leader>2 :call SetTab(2)<CR>
+" nnoremap <Leader>4 :call SetTab(2)<CR>
 nnoremap <Leader><Leader> :call ToggleColorColumn()<CR>
 nnoremap <LocalLeader><LocalLeader> :Autoformat<CR>
 
@@ -255,7 +251,7 @@ nmap <leader>7 <Plug>AirlineSelectTab7
 nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
 
-" Use thes mappings to surround words and/or selections
+" Use these mappings to surround words and/or selections
 " with the following characters '' "" () {} []
 " with optional spaces e.g. 'word' or ' word '.
 " These mappings work well with the vim surround plugin.
@@ -302,7 +298,7 @@ vnoremap <Leader><Space>] <ESC>`>a ]<ESC>`<i[ <ESC>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup filetype_python
   autocmd FileType python setlocal shiftwidth=4 softtabstop=4
-  autocmd FileType python set omnifunc=pythoncomplete#Complete
+  autocmd FileType python set omnifunc=python3complete#Complete
 augroup END
 
 
@@ -337,9 +333,22 @@ augroup filetype_sh
 augroup END
 
 
+"augroup filetype_javascript
+"  autocmd FileType javascript setlocal shiftwidth=4 softtabstop=4
+"augroup END
+
+
+augroup filetype_typescript
+  autocmd BufRead,BufNewFile *.ts set filetype=typescript
+  autocmd BufNewFile,BufRead *.ts set ft=typescript
+  autocmd FileType typescript setlocal shiftwidth=2 softtabstop=2
+augroup END
+
+
 augroup filetype_json
   autocmd BufRead,BufNewFile *.json set filetype=json
-  autocmd BufNewFile,BufRead *.json set ft=javascript
+  autocmd BufNewFile,BufRead *.json set ft=json
+  autocmd FileType typescript setlocal shiftwidth=2 softtabstop=2
 augroup END
 
 

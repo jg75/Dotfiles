@@ -1,11 +1,11 @@
+awsci
 bash-completion
-gawk
 git
-go
 grc
-nvm
-python
-python3
-vim
+jq
 macvim
+nvm
+pass
+python
+vim
 wget
